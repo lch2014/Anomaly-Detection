@@ -15,9 +15,10 @@ def split_datasets_by_label(df, data_name, dst_path):
         pass
 
 #根据标签分割的数据集,构建子集
-def make_subsets_by_ratio(file_path, ratio, dst_path):
+def make_subsets_by_ratio(file_path, ratio):
     all_data = []
     for f in glob.glob(file_path + "*.csv"):
+        print("***** Processing " + str(f) + " *******")
         df = pd.read_csv(f, low_memory=False)
         td = cu.split_dataset_by_ratio(df, ratio)
         all_data.append(td)
@@ -27,7 +28,8 @@ def make_subsets_by_ratio(file_path, ratio, dst_path):
 #转换数据类型
 def convert_datatype(df, data_name):
     if data_name == "ids2018":
-        for row in md8.FEATURE_LIST[0:1]
+        for row in md8.FEATURE_LIST[0:1]:
+            df[row] = df[row].astype[int]
         for row in md8.FEATURE_LIST[2:]:
             df[row] = df[row].astype(float)
     return df
@@ -46,12 +48,17 @@ def label_encoding(df, labels, option, data_name):
      #二分编码
         elif option == 3:
             codes = []
-            if data_name == "ids2018"
-                for label in labels:
-                    if label == "Benign":
-                        codes.append(0)
-                    else:
-                        codes.append(1)
+            for label in labels:
+                if label == "Benign":
+                    codes.append(0)
+                else:
+                    codes.append(1)
 
         df['Label'].replace(labels, codes, inplace=True)
     return df
+
+def main():
+    file_path = "../../split_csv/"
+    dst_path = "../../10percent/"
+    df = make_subsets_by_ratio(file_path, 0.1)
+    cu.write_to_csv(df, dst_path+"10percent.csv")
