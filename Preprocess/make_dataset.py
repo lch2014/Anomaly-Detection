@@ -20,7 +20,7 @@ def make_subsets_by_ratio(file_path, ratio):
     for f in glob.glob(file_path + "*.csv"):
         print("***** Processing " + str(f) + " *******")
         df = pd.read_csv(f, low_memory=False)
-        td = cu.split_dataset_by_ratio(df, ratio)
+        td, td2 = cu.split_dataset_by_ratio(df, ratio)
         all_data.append(td)
     data = pd.concat(all_data, axis=0, ignore_index=True)
     return data
