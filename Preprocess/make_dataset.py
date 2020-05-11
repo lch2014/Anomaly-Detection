@@ -62,3 +62,6 @@ def main():
     dst_path = "../../10percent/"
     df = make_subsets_by_ratio(file_path, 0.1)
     cu.write_to_csv(df, dst_path+"10percent.csv")
+
+if __name__ == "__main__":
+    main()
