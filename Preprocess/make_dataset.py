@@ -26,4 +26,32 @@ def make_subsets_by_ratio(file_path, ratio, dst_path):
 
 #转换数据类型
 def convert_datatype(df, data_name):
-    pass
+    if data_name == "ids2018":
+        for row in md8.FEATURE_LIST[0:1]
+        for row in md8.FEATURE_LIST[2:]:
+            df[row] = df[row].astype(float)
+    return df
+
+#标签编码
+def label_encoding(df, labels, option, data_name):
+    if data_name == "ids2018":
+        #小类编码
+        if option == 1:
+            codes = [ i for i in range(len(labels))]
+
+        #大类编码
+        elif option == 2:
+            codes = [0, 1, 2, 2, 2, 2, 3, 4, 4, 5, 4, 4, 6, 6]
+
+     #二分编码
+        elif option == 3:
+            codes = []
+            if data_name == "ids2018"
+                for label in labels:
+                    if label == "Benign":
+                        codes.append(0)
+                    else:
+                        codes.append(1)
+
+        df['Label'].replace(labels, codes, inplace=True)
+    return df
