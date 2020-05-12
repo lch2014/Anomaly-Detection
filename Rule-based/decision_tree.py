@@ -14,9 +14,14 @@ from sklearn.metrics import accuracy_score
 def train(file_path):
     df = pd.read_csv(file_path, low_memory=False)
     df = cu.drop_attribute(df, ['Timestamp'])
+    df = df.dropna(axis=0)
     df = md.convert_datatype(df, "ids2018")
     df = md.label_encoding(df, md8.LABEL_LIST, 1, "ids2018")
     df = shuffle(df)
+    df = df.replace([np.inf, -np.inf], np.nan)
+    df = df.dropna(axis=0)
+    print(df.shape)
+    print(df.isnull().values.nany())
     values = df.values
     X, Y = values[:, :-1], values[:, -1]
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)

@@ -1,8 +1,8 @@
 import pandas as pd
 import sys
 import glob
-import csv_utils as cu
-import meta_data_2018 as md8
+import Preprocess.csv_utils as cu
+import Preprocess.meta_data_2018 as md8
 
 #根据标签分割数据集
 def split_datasets_by_label(df, data_name, dst_path):
@@ -29,8 +29,8 @@ def make_subsets_by_ratio(file_path, ratio):
 def convert_datatype(df, data_name):
     if data_name == "ids2018":
         for row in md8.FEATURE_LIST[0:1]:
-            df[row] = df[row].astype[int]
-        for row in md8.FEATURE_LIST[2:]:
+            df[row] = df[row].astype(int)
+        for row in md8.FEATURE_LIST[2:-1]:
             df[row] = df[row].astype(float)
     return df
 
