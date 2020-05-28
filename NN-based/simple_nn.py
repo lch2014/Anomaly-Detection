@@ -70,9 +70,9 @@ if __name__ == "__main__":
 
     LE, X_train, Y_train, X_test, Y_test = get_data(file_path)
     num_features = X_train.shape[-1]
-    train_dataset = Data.TensorDataset(X_train, Y_train)
+    train_dataset = Data.TensorDataset(torch.from_numpy(X_train), torch.from_numpy(Y_train))
     train_loader = Data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataset = Data.TensorDataset(X_test, Y_test)
+    test_dataset = Data.TensorDataset(torch.from_numpy(X_test), torch.from_numpy(Y_test))
     test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
     iter_train = iter(train_loader)
 
