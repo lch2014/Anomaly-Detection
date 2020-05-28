@@ -81,12 +81,17 @@ if __name__ == "__main__":
     test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
 
     AE = AutoEncoder(num_features)
+    for name, param in AE.parameters():
+        if param.requires_graf == True:
+            print("\t", name)
     criterion = nn.MSELoss()
     optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
 
-    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
+    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 
     AE = AE.to(device)
+
+    print("Start training.............................")
 
     for epoch in range(epoches):
         if epoch in [epoches * 0.25, epoches * 0.5]:
