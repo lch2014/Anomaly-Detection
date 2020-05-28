@@ -77,13 +77,13 @@ if __name__ == "__main__":
     
     train_dataset = Data.TensorDataset(torch.from_numpy(X_train), torch.from_numpy(Y_train))
     train_loader = Data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataset = Data.TensorDataset(torch.from_numpy(X_test), torch.from_numpy(Y_test))
-    test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
+    print("Train data loaded!")
+
+    #test_dataset = Data.TensorDataset(torch.from_numpy(X_test), torch.from_numpy(Y_test))
+    #test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
+    #print("Test data loaded!")
 
     AE = AutoEncoder(num_features)
-    for name, param in AE.parameters():
-        if param.requires_graf == True:
-            print("\t", name)
     criterion = nn.MSELoss()
     optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
 
