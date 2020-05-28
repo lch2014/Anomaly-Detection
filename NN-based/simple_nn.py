@@ -96,7 +96,7 @@ if __name__ == "__main__":
     test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
     print("Test data loaded!")
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
     '''
     AE = AutoEncoder(num_features)
     criterion = nn.MSELoss()
@@ -133,6 +133,7 @@ if __name__ == "__main__":
 
     train_loss = 0.0
     train_corrects = 0
+    best_valid_acc = 0
     step = 0
     epoch = 0
     iter_data = iter(train_loader)
@@ -142,10 +143,25 @@ if __name__ == "__main__":
         try:
             train_batch, train_label = next(iter_data)
         except StopIteration:
-            print('Epoch: {}\tLoss:{}\tAcc:{}'.format(epoch+1, train_loss/len(train_loader.dataset), train_corrects.double()/len(train_loader.dataset)))
+            print('Epoch: {}\tTrain Loss:{}\tAcc:{}'.format(epoch+1, train_loss/len(train_loader.dataset), train_corrects.double()/len(train_loader.dataset)))
             step = 0
             train_loss = 0.0
             train_corrects = 0
+            if (epoch+1) % 5 == 0:
+                MC.eval()
+                valid_corrects = 0
+                for test_batch, test_label in test_loader:
+                    test_batch = test_batch.to(device)
+                    test_label = test_label.to(device)
+                    output = MC(test_batch)
+                    _, preds = torch.max(output, 1)
+                    valid_corrects += torch.sum(preds == test_label)
+                valid_acc = valid_corrects.double()/len(test_loader.dataset)
+                if valid_acc > best_valid_acc:
+                    best_valid_acc = valid_acc
+                print('Epoch: {}\tValid\tAcc:{}'.format(epoch+1, valid_corrects.double()/len(test_loader.dataset)))
+                MC.train()
+
             iter_data = iter(train_loader)
             train_batch, train_label = next(iter_data)
             epoch += 1
@@ -165,3 +181,5 @@ if __name__ == "__main__":
                     epoch+1, (step + 1)* len(train_batch), len(train_loader.dataset),
                     100. * (step + 1) / len(train_loader)))
         step += 1
+
+    print(best_valid_acc)
