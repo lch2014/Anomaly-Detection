@@ -29,7 +29,7 @@ def make_subsets_by_ratio(file_path, ratio):
 def convert_datatype(df, data_name):
     if data_name == "ids2018":
         for row in md8.FEATURE_LIST[0:1]:
-            df[row] = df[row].astype(int)
+            df[row] = df[row].astype(float)
         for row in md8.FEATURE_LIST[2:-1]:
             df[row] = df[row].astype(float)
     return df
