@@ -62,7 +62,7 @@ class AutoEncoder(nn.Module):
         return encode, decode
 
 if __name__ == "__main__":
-    file_path = "../../split_csv_new"
+    file_path = "../../split_csv_new/"
     batch_size = 128
     lr = 0.01
     wd = 1e-5
@@ -70,17 +70,17 @@ if __name__ == "__main__":
 
     LE, X_train, Y_train, X_test, Y_test = get_data(file_path)
     num_features = X_train.shape[-1]
-    train_dataset = Data.TensorDataset(torch.from_numpy(X_train), torch.from_numpy(Y_train))
+    train_dataset = Data.TensorDataset(X_train, Y_train)
     train_loader = Data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-    test_dataset = Data.TensorDataset(torch.from_numpy(X_test), torch.from_numpy(Y_test))
+    test_dataset = Data.TensorDataset(X_test, Y_test)
     test_loader = Data.DataLoader(test_dataset, batch_size=64, shuffle=True)
     iter_train = iter(train_loader)
 
     AE = AutoEncoder(num_features)
     criterion = nn.MSELoss()
-    optimizier = optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
+    optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     AE = AE.to(device)
 
