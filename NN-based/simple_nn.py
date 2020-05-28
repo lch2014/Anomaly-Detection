@@ -63,6 +63,7 @@ class AutoEncoder(nn.Module):
 
 class MLPClassifier(nn.Module):
     def __init__(self, num_features, num_labels):
+        super(MLPClassifier, self).__init__()
         self.classifier = nn.Sequential(nn.Linear(num_features, 32),
                                         nn.Dropout(0.5),
                                         nn.ReLU(True),
@@ -121,7 +122,7 @@ if __name__ == "__main__":
 
         print("epoch: {}, loss is {}".format((epoch+1), loss.data.float()))
     '''
-    
+
     MC = MLPClassifier(num_features, num_labels)
     criterion2 = nn.CrossEntropyLoss()
     optimizier2 = torch.optim.Adam(MC.parameters(), lr=0.001)
