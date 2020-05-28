@@ -73,7 +73,7 @@ class MLPClassifier(nn.Module):
         return x
 
 if __name__ == "__main__":
-    file_path = "../../split_csv_new/"
+    file_path = "../../10percent/"
     batch_size = 128
     lr = 0.01
     wd = 1e-5
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     print("Test data loaded!")
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-'''
+    '''
     AE = AutoEncoder(num_features)
     criterion = nn.MSELoss()
     optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
@@ -120,7 +120,8 @@ if __name__ == "__main__":
             optimizier.step()
 
         print("epoch: {}, loss is {}".format((epoch+1), loss.data.float()))
-'''
+    '''
+    
     MC = MLPClassifier(num_features, num_labels)
     criterion2 = nn.CrossEntropyLoss()
     optimizier2 = torch.optim.Adam(MC.parameters(), lr=0.001)
