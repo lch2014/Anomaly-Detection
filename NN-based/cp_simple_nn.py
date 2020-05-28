@@ -62,7 +62,7 @@ class AutoEncoder(nn.Module):
         return encode, decode
 
 if __name__ == "__main__":
-    file_path = "../../split_csv_new/"
+    file_path = "../../10percent/"
     batch_size = 128
     lr = 0.01
     wd = 1e-5
@@ -87,7 +87,7 @@ if __name__ == "__main__":
     criterion = nn.MSELoss()
     optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
 
     AE = AE.to(device)
 
