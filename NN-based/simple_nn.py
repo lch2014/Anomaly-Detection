@@ -97,7 +97,7 @@ if __name__ == "__main__":
     print("Test data loaded!")
 
     device = torch.device('cuda:1' if torch.cuda.is_available() else 'cpu')
-    '''
+    
     AE = AutoEncoder(num_features)
     criterion = nn.MSELoss()
     optimizier = torch.optim.Adam(AE.parameters(), lr=lr, weight_decay=wd)
@@ -121,9 +121,9 @@ if __name__ == "__main__":
             optimizier.step()
 
         print("epoch: {}, loss is {}".format((epoch+1), loss.data.float()))
-    '''
+    
 
-    MC = MLPClassifier(num_features, num_labels)
+    MC = MLPClassifier(10, num_labels)
     criterion2 = nn.CrossEntropyLoss()
     optimizier2 = torch.optim.Adam(MC.parameters(), lr=0.001)
 
@@ -152,8 +152,9 @@ if __name__ == "__main__":
                 valid_corrects = 0
                 for test_batch, test_label in test_loader:
                     test_batch = test_batch.to(device)
+                    test_batch_encode = AE(test_batch)
                     test_label = test_label.to(device)
-                    output = MC(test_batch)
+                    output = MC(test_batch_encode)
                     _, preds = torch.max(output, 1)
                     valid_corrects += torch.sum(preds == test_label)
                 valid_acc = valid_corrects.double()/len(test_loader.dataset)
@@ -167,8 +168,9 @@ if __name__ == "__main__":
             epoch += 1
 
         train_batch = train_batch.to(device)
+        train_batch_encode,_ = AE(train_batch)
         train_label = train_label.to(device)
-        output = MC(train_batch)
+        output = MC(train_batch_encode)
         loss = criterion2(output, train_label.long())
         _, preds = torch.max(output, 1)
         train_corrects += torch.sum(preds == train_label)
